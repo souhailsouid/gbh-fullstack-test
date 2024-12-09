@@ -11,6 +11,7 @@ You can either:
 - Implement your own backend with the provided data structure
 
 ## Required Features
+- Responsive design (mobile, tablet, desktop)
 - Display a paginated vehicle list
 - Filter vehicles by manufacturer, type, and year
 - Sort vehicles by price and year
@@ -71,6 +72,7 @@ The most important part of the evaluation will be a video call where you'll pres
 - Component organization
 - Error handling
 - Testing approach
+- Responsive design implementation
 
 ### Development Practices (20%)
 - Git workflow
