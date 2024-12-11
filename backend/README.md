@@ -26,6 +26,53 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+# Vehicle Filtering API
+
+A simple backend API built with NestJS to filter, sort, and paginate vehicle data. Includes Swagger documentation for API exploration and unit tests for service and controller.
+
+## Features
+- Filter vehicles by:
+  - Manufacturer
+  - Type (SUV, SEDAN, etc.)
+  - Year
+  - Price range (min/max)
+- Sort vehicles by:
+  - Price
+  - Year
+  - Manufacturer
+  - Mileage
+- Paginate results with metadata.
+- API documentation using Swagger.
+
+## Tech Stack
+- **NestJS**: Backend framework
+- **Swagger**: API documentation
+- **Jest**: Unit testing
+- **TypeScript**: Static typing
+
+### API Endpoints
+GET /vehicles
+Query parameters:
+page: Page number (default: 1)
+limit: Number of results per page (default: 10)
+manufacturer: Filter by manufacturer
+type: Filter by vehicle type
+year: Filter by year
+sort: Sort by specific field
+priceMin: Minimum price
+priceMax: Maximum price
+
+## Code Structure
+- **vehicle**: Contains all vehicle-related logic.
+  - `vehicle.controller.ts`: Handles API requests.
+  - `vehicle.service.ts`: Contains core logic for filtering, sorting, and pagination.
+  - `vehicle.interface.ts`: Defines types for vehicles, sorting, and filtering.
+  - `get-vehicles.dto.ts`: Validates query parameters.
+  - `vehicle.mock-data.ts`: Contains mock vehicle data.
+  - `__tests__/`: Unit tests for the service and controller.
+- **shared/utils**: Reusable utility functions.
+- **shared/database**: Future database-related logic.
+
 ## Project setup
 
 ```bash
