@@ -1,7 +1,13 @@
-import { Controller, Get, NotFoundException, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { VehicleService } from '@vehicle/vehicle.service';
 import { GetVehiclesDto } from './get-vehicles.dto';
-import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { SortBy, VehicleType } from '@vehicle/vehicle.interface';
 
 @ApiTags('vehicles')
@@ -21,6 +27,7 @@ export class VehicleController {
     type: Number,
     description: 'Number of items per page',
   })
+  @ApiQuery({ name: 'year', required: false, type: Number })
   @ApiQuery({ name: 'manufacturer', required: false, type: String })
   @ApiQuery({ name: 'type', required: false, enum: VehicleType })
   @ApiQuery({ name: 'sort', required: false, enum: SortBy })
@@ -37,6 +44,7 @@ export class VehicleController {
     description: 'Maximum price filter',
   })
   @ApiResponse({ status: 200, description: 'Returns a list of vehicles.' })
+  @ApiResponse({ status: 404, description: 'No vehicles found.' })
   @Get()
   getVehicles(@Query() query: GetVehiclesDto) {
     // Retrieve filtered, sorted, and paginated vehicles
@@ -55,5 +63,22 @@ export class VehicleController {
       hasNextPage: result.hasNextPage,
       hasPreviousPage: result.hasPreviousPage,
     };
+  }
+
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: String,
+    description: 'Vehicle ID',
+  })
+  @ApiResponse({ status: 200, description: 'Returns the vehicle details.' })
+  @ApiResponse({ status: 404, description: 'Vehicle not found.' })
+  @Get(':id')
+  getVehicleById(@Param('id') id: string) {
+    const vehicle = this.vehicleService.getVehicleById(id);
+    if (!vehicle) {
+      throw new NotFoundException(`Vehicle with id ${id} not found`);
+    }
+    return vehicle;
   }
 }

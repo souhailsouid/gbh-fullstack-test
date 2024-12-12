@@ -249,4 +249,18 @@ describe('VehicleService', () => {
       expect(result.hasPreviousPage).toBe(false);
     });
   });
+  describe('getVehicleById', () => {
+    it('should return the correct vehicle', () => {
+      const result = service.getVehicleById('1');
+      expect(result).toEqual(mockVehicles[0]);
+
+      const result2 = service.getVehicleById('2');
+
+      expect(result2).toEqual(mockVehicles[1]);
+    });
+    it('should return undefined for non-existent vehicle', () => {
+      const result = service.getVehicleById('100');
+      expect(result).toBeUndefined();
+    });
+  });
 });

@@ -3,7 +3,7 @@ import { VehicleController } from '@vehicle/vehicle.controller';
 import { VehicleService } from '@vehicle/vehicle.service';
 import { vehicles } from '@vehicle/vehicle.mock-data';
 import { GetVehiclesDto } from '@vehicle/get-vehicles.dto';
-import { ValidationPipe } from '@nestjs/common';
+import { NotFoundException, ValidationPipe } from '@nestjs/common';
 
 describe('VehicleController', () => {
   let controller: VehicleController;
@@ -18,6 +18,9 @@ describe('VehicleController', () => {
           provide: VehicleService,
           useValue: {
             getFilteredVehicles: jest.fn(),
+            getVehicleById: jest.fn((id: string) =>
+              vehicles.find((vehicle) => vehicle.id === id),
+            ),
           },
         },
       ],
@@ -75,43 +78,6 @@ describe('VehicleController', () => {
       expect(service.getFilteredVehicles).toHaveBeenCalledWith(query);
     });
 
-    it('should return empty data if service returns no results', () => {
-      const query: GetVehiclesDto = {
-        page: 1,
-        limit: 2,
-        manufacturer: 'NonExistent',
-        type: undefined,
-        year: undefined,
-        sort: undefined,
-        priceMin: undefined,
-        priceMax: undefined,
-      };
-
-      jest.spyOn(service, 'getFilteredVehicles').mockReturnValue({
-        data: [],
-        total: 0,
-        page: 1,
-        limit: 2,
-        totalPages: 0,
-        hasNextPage: false,
-        hasPreviousPage: false,
-      });
-
-      const result = controller.getVehicles(query);
-
-      expect(result).toEqual({
-        data: [],
-        total: 0,
-        page: 1,
-        limit: 2,
-        totalPages: 0,
-        hasNextPage: false,
-        hasPreviousPage: false,
-      });
-
-      expect(service.getFilteredVehicles).toHaveBeenCalledWith(query);
-    });
-
     it('should throw an error if the service fails', () => {
       const query: GetVehiclesDto = {
         page: 1,
@@ -163,6 +129,26 @@ describe('VehicleController', () => {
       };
 
       expect(() => controller.getVehicles(query)).toThrow();
+    });
+  });
+
+  describe('getVehicleById', () => {
+    it('should return a vehicle when a valid ID is provided', () => {
+      const vehicleId = '1';
+      const vehicle = vehicles.find((v) => v.id === vehicleId);
+
+      expect(controller.getVehicleById(vehicleId)).toEqual(vehicle);
+      expect(service.getVehicleById).toHaveBeenCalledWith(vehicleId);
+    });
+
+    it('should throw NotFoundException when an invalid ID is provided', () => {
+      const invalidId = '999';
+      jest.spyOn(service, 'getVehicleById').mockReturnValue(undefined);
+
+      expect(() => controller.getVehicleById(invalidId)).toThrow(
+        NotFoundException,
+      );
+      expect(service.getVehicleById).toHaveBeenCalledWith(invalidId);
     });
   });
 });

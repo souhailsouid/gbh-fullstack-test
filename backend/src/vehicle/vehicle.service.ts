@@ -25,12 +25,11 @@ export class VehicleService {
       type: (vehicle: Vehicle) =>
         !filters.type || vehicle.type === filters.type,
       year: (vehicle: Vehicle) =>
-        !filters.year || vehicle.year === filters.year,
+        !filters.year || vehicle.year === Number(filters.year),
       price: (vehicle: Vehicle) =>
         (!filters.priceMin || vehicle.price >= filters.priceMin) &&
         (!filters.priceMax || vehicle.price <= filters.priceMax),
     };
-
     return vehicles.filter((vehicle) =>
       Object.values(filterLogic).every((filter) => filter(vehicle)),
     );
@@ -88,10 +87,8 @@ export class VehicleService {
   }
 
   getFilteredVehicles(params: GetVehiclesDto) {
-    // Start with the full dataset
     let filteredVehicles = vehicles;
 
-    // Apply filters
     filteredVehicles = this.filterVehicles(filteredVehicles, {
       manufacturer: params.manufacturer,
       type: params.type,
@@ -100,10 +97,11 @@ export class VehicleService {
       priceMax: params.priceMax,
     });
 
-    // Apply sorting if specified
     const sortedVehicles = this.sortVehicles(filteredVehicles, params.sort);
 
-    // Apply pagination
     return this.paginateVehicles(sortedVehicles, params.page, params.limit);
+  }
+  getVehicleById(id: string): Vehicle | undefined {
+    return vehicles.find((vehicle) => vehicle.id === id);
   }
 }

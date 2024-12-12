@@ -23,6 +23,7 @@
       "@controllers/*": ["src/controllers/*"],
       "@mock-data/*": ["src/mock-data/*"],
       "@vehicle/*": ["src/vehicle/*"],
+      "@src/*": ["src/*"]
     }
   }
 }
