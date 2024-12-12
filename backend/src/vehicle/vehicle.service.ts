@@ -35,7 +35,11 @@ export class VehicleService {
     );
   }
 
-  sortVehicles(vehicles: Vehicle[], sortBy?: SortBy): Vehicle[] {
+  sortVehicles(
+    vehicles: Vehicle[],
+    sortBy?: SortBy,
+    order: 'asc' | 'desc' = 'asc',
+  ): Vehicle[] {
     const sortLogic: Partial<
       Record<SortBy, (a: Vehicle, b: Vehicle) => number>
     > = {
@@ -46,9 +50,12 @@ export class VehicleService {
         a.manufacturer.localeCompare(b.manufacturer),
     };
 
-    return sortBy && sortLogic[sortBy]
-      ? [...vehicles].sort(sortLogic[sortBy])
-      : vehicles;
+    const sorted =
+      sortBy && sortLogic[sortBy]
+        ? [...vehicles].sort(sortLogic[sortBy])
+        : vehicles;
+
+    return order === 'desc' ? sorted.reverse() : sorted;
   }
 
   paginateVehicles(
@@ -96,8 +103,11 @@ export class VehicleService {
       priceMin: params.priceMin,
       priceMax: params.priceMax,
     });
-
-    const sortedVehicles = this.sortVehicles(filteredVehicles, params.sort);
+    const sortedVehicles = this.sortVehicles(
+      filteredVehicles,
+      params.sort,
+      params.order,
+    );
 
     return this.paginateVehicles(sortedVehicles, params.page, params.limit);
   }

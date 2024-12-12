@@ -27,6 +27,13 @@ export class VehicleController {
     type: Number,
     description: 'Number of items per page',
   })
+  @ApiQuery({
+    name: 'order',
+    required: false,
+    type: String,
+    enum: ['asc', 'desc'],
+    description: 'Sorting order (asc or desc)',
+  })
   @ApiQuery({ name: 'year', required: false, type: Number })
   @ApiQuery({ name: 'manufacturer', required: false, type: String })
   @ApiQuery({ name: 'type', required: false, enum: VehicleType })

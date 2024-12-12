@@ -37,4 +37,8 @@ export class GetVehiclesDto {
   @IsOptional()
   @Type(() => Number)
   priceMax?: number;
+
+  @IsOptional()
+  @IsString()
+  order?: 'asc' | 'desc' = 'asc'; // Default to ascending order if not provided
 }
