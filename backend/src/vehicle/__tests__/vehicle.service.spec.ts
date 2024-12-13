@@ -105,7 +105,14 @@ describe('VehicleService', () => {
     it('should sort by year in descending order', () => {
       const result = service.sortVehicles(mockVehicles, SortBy.YEAR);
       expect(result[0].year).toBe(2023);
-      expect(result[1].year).toBe(2022);
+      expect(result[1].year).toBe(2023);
+      expect(result[2].year).toBe(2023);
+      expect(result[3].year).toBe(2023);
+      expect(result[4].year).toBe(2023);
+      expect(result[5].year).toBe(2022);
+      expect(result[6].year).toBe(2022);
+      expect(result[7].year).toBe(2022);
+      expect(result[8].year).toBe(2021);
     });
 
     it('should handle invalid sortBy gracefully', () => {
@@ -117,10 +124,10 @@ describe('VehicleService', () => {
     it('should return the correct paginated results for page 1', () => {
       const result = service.paginateVehicles(mockVehicles, 1, 1);
       expect(result.data.length).toBe(1);
-      expect(result.total).toBe(6);
+      expect(result.total).toBe(11);
       expect(result.page).toBe(1);
       expect(result.limit).toBe(1);
-      expect(result.totalPages).toBe(6);
+      expect(result.totalPages).toBe(11);
       expect(result.hasNextPage).toBe(true);
       expect(result.hasPreviousPage).toBe(false);
     });

@@ -163,7 +163,9 @@ describe('VehicleController (e2e)', () => {
       transmission: 'Automatic',
       mileage: 15000,
       features: ['Autopilot', 'Long Range'],
-      images: ['/images/tesla-model-3.jpg'],
+      images: [
+        'https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-3-Choose-Performance-Desktop-LHD.png',
+      ],
       description: 'A premium electric sedan with cutting-edge technology.',
     };
 
