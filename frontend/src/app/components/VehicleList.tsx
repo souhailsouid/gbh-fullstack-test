@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link';
 import Image from 'next/image';
 import FiltersBar from './FilterBar';
@@ -6,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Vehicle } from '../interfaces/Vehicles.interface';
 import { fetchVehicles } from '../services/vehicleService';
 import Pagination from './Pagination';
+import SortBar from './SortBar';
 
 export default function VehicleList() {
   const [filters, setFilters] = useState<Record<string, string | number | undefined>>({});
@@ -33,35 +35,17 @@ export default function VehicleList() {
       <FiltersBar
         onApply={(newFilters) => {
           setFilters(newFilters);
-          setPage(1); 
+          setPage(1);
         }}
       />
 
-      <div className="flex items-center space-x-4 mb-4">
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">Sort by:</span>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="px-3 py-2 border rounded-md bg-white shadow-sm hover:border-gray-300 focus:outline-none"
-          >
-            <option value="price">Price</option>
-            <option value="year">Year</option>
-          </select>
-        </div>
+      <SortBar
+        sort={sort}
+        order={order}
+        onSortChange={(newSort) => setSort(newSort)}
+        onOrderChange={(newOrder) => setOrder(newOrder)}
+      />
 
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">Order:</span>
-          <select
-            value={order}
-            onChange={(e) => setOrder(e.target.value)}
-            className="px-3 py-2 border rounded-md bg-white shadow-sm hover:border-gray-300 focus:outline-none"
-          >
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </select>
-        </div>
-      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {vehicles?.data?.map((vehicle: Vehicle) => (

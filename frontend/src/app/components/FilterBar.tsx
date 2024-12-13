@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react';
 
 export default function FiltersBar({ onApply }: { onApply: (filters: Record<string, string | number | undefined>) => void }) {
